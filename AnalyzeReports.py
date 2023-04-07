@@ -29,26 +29,20 @@ for account in accounts:
 
     for fy in fys:
         for period in range(1,13):
-            print (fy,period)
+            # print (fy,period)
             inputPDFFileName = f"LedgerPDFs/FY{fy}_Period{period :03d}_{account}.pdf"
-            print(inputPDFFileName)
+            # print(inputPDFFileName)
             if os.path.isfile(inputPDFFileName):
                 print(f"Found report for {account} FY{fy} Period{period} ++++++")
                 report = AccountReport(inputPDFFileName)
             else:
-                print(f"Missing report for {account} FY{fy} Period{period}")
+                # print(f"Missing report for {account} FY{fy} Period{period}")
                 for item in y[account]:
                     y[account][item].append(0)
                 continue
 
             for item in y[account]:
                 y[account][item].append( getattr(report,item) )
-            # report.totalCumulativeExpenditures
-
-print(y)
-# # Data for plotting
-# t = np.arange(0.0, 2.0, 0.01)
-# s = 1 + np.sin(2 * np.pi * t)
 
 fig, ax = plt.subplots()
 
@@ -60,7 +54,9 @@ for iaccount,account in enumerate(accounts):
     ax.plot(x,y[account]["totalSponsorBudget"],":",label=f"{account} Total Sponsor Budget",c=colors[iaccount])
     ax.fill(x,y[account]["totalCumulativeExpenditures"],c=colors[iaccount],alpha=0.3)
     ax.plot(x,y[account]["totalCumulativeExpenditures"],"o-",label=f"{account} Total Cumulative Expenditures",c=colors[iaccount])
-    ax.plot(x,y[account]["totalEncumbrances"],"--",label=f"{account} Total Encumbrances",c=colors[iaccount])
+    ax.plot(x,
+        [sum(tmp) for tmp in zip(y[account]["totalEncumbrances"],y[account]["totalCumulativeExpenditures"])]
+        ,"--",label=f"{account} Total Encumbrances+Exp",c=colors[iaccount])
 
 ax.set(xlabel='Period in FY2023', ylabel='Dollars', ylim=[0,200000],xlim=[1,9])
 ax.grid()
