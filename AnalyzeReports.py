@@ -71,7 +71,8 @@ fig.savefig("Budgets.pdf")
 
 plt.cla()
 for iaccount,account in enumerate(accounts):
-    ax.fill_between(x,y[account]["totalUnderOverSpent"],label=f"{account} Total Projected Over/Under Spent",color=colors[iaccount],alpha=0.3)
+    ax.fill_between(x,y[account]["totalUnderOverSpent"],color=colors[iaccount],alpha=0.3)
+    ax.plot(x,y[account]["totalUnderOverSpent"],"o-",label=f"{account} Total Projected Over/Under Spent",color=colors[iaccount])
 
 ax.set(xlabel='Period in FY2023', ylabel='Dollars', ylim=[-100,50000],xlim=[1,9])
 ax.grid()
