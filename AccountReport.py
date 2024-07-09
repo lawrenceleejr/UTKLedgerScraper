@@ -51,14 +51,25 @@ class AccountReport:
             if "TOTALCOSTS" in line:
                 totalsLineNumber = i
 
-        self.obligatedAmount = cleanAndCastNumber(self.splitText[7].split()[-1])
-        self.fAndA = cleanAndCastNumber(self.splitText[9].split()[1])
-        self.totalSponsorBudget = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[1])
-        self.totalCurrentPeriodExpenditures = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[2])
-        self.totalCumulativeExpenditures = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[3])
-        self.totalEncumbrances = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[4])
-        self.totalManualFundsReservations = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[5])
-        self.totalUnderOverSpent = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[6])
+        # Parse the ledger reports for start-up differently
+        if self.splitText[0].startswith("U013410060"):
+            summary_line = self.rawText.splitlines()[20].split()
+            self.totalEncumbrances = cleanAndCastNumber(summary_line[6])
+            self.totalSponsorBudget = cleanAndCastNumber(summary_line[5])
+            self.totalCurrentPeriodExpenditures = cleanAndCastNumber(summary_line[3]+summary_line[4])
+            self.totalCumulativeExpenditures = cleanAndCastNumber(summary_line[7])
+            self.totalManualFundsReservations = 0
+            self.totalUnderOverSpent = 0
+
+        else:
+            self.obligatedAmount = cleanAndCastNumber(self.splitText[7].split()[-1])
+            self.fAndA = cleanAndCastNumber(self.splitText[9].split()[1])
+            self.totalSponsorBudget = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[1])
+            self.totalCurrentPeriodExpenditures = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[2])
+            self.totalCumulativeExpenditures = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[3])
+            self.totalEncumbrances = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[4])
+            self.totalManualFundsReservations = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[5])
+            self.totalUnderOverSpent = cleanAndCastNumber(self.splitText[totalsLineNumber].split()[6])
 
 
 # tmpFile = AccountReport("LedgerPDFs/FY2023_Period007_R011065670.pdf")
