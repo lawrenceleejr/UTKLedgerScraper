@@ -69,7 +69,7 @@ class AccountReport:
             self.totalCurrentPeriodExpenditures = cleanAndCastNumber(current_month.replace(" ",""))
             self.totalCumulativeExpenditures = cleanAndCastNumber(remaining_summary[2*block_size:3*block_size])
             self.totalManualFundsReservations = 0
-            self.totalUnderOverSpent = 0
+            self.totalUnderOverSpent = self.totalSponsorBudget - self.totalEncumbrances
             #print(summary_numbers)
             #print(current_month)
             #print(remaining_summary)

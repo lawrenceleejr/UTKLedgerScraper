@@ -88,14 +88,14 @@ fig.savefig("Budgets.pdf")
 
 plt.cla()
 for iaccount,account in enumerate(accounts):
-    ax.fill_between(x,y[account]["totalUnderOverSpent"],color=colors[iaccount],alpha=0.3)
+    ax.fill_between(x_dates,y[account]["totalUnderOverSpent"],color=colors[iaccount],alpha=0.3)
     ax.plot(x_dates,y[account]["totalUnderOverSpent"],"o-",label=f"{account} Total Projected Over/Under Spent",color=colors[iaccount])
 
 # Format the x-axis to show dates properly
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%b \'%y'))
 plt.xticks(rotation=45)
 
-ax.set(xlabel='Date', ylabel='Dollars', ylim=[-20000,200000])#,xlim=[1,10])
+ax.set(xlabel='Date', ylabel='Dollars', ylim=[-20000,400000])#,xlim=[1,10])
 ax.grid()
 ax.legend(loc="upper left")
 
